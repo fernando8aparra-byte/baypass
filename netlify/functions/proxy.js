@@ -21,7 +21,13 @@ exports.handler = async (event) => {
       ...(isPost ? { body: JSON.stringify(reqBody) } : {}),
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try {
+      data = text ? JSON.parse(text) : { _raw: '(respuesta vacía)', status: res.status };
+    } catch (_) {
+      data = { _raw: text, status: res.status };
+    }
     return { statusCode: res.status, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify(data) };
   } catch (e) {
     return { statusCode: 500, headers: { ...cors, 'Content-Type': 'application/json' }, body: JSON.stringify({ error: e.message }) };
