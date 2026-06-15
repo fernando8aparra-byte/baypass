@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RexActivator — Registro de Serial</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0b0f1a; --surface: #111827; --border: #1f2d45;
+    --accent: #3b82f6; --accent2: #06b6d4;
+    --success: #10b981; --error: #ef4444; --warn: #f59e0b;
+    --text: #e2e8f0; --muted: #64748b;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Inter', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem 4rem; }
+  header { text-align: center; margin-bottom: 2.5rem; }
+  .logo { display: inline-flex; align-items: center; gap: .6rem; font-family: var(--mono); font-size: 1.1rem; font-weight: 600; color: var(--accent2); letter-spacing: .05em; margin-bottom: 1rem; }
+  .logo svg { width: 28px; height: 28px; }
+  h1 { font-size: clamp(1.6rem,4vw,2.2rem); font-weight: 700; background: linear-gradient(135deg,#e2e8f0 30%,var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .subtitle { margin-top: .5rem; color: var(--muted); font-size: .9rem; }
+  #balance-bar { display: flex; align-items: center; gap: .5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: .4rem 1rem; font-size: .82rem; color: var(--muted); margin-top: 1.2rem; }
+  #balance-bar span { color: var(--success); font-weight: 600; font-family: var(--mono); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; width: 100%; max-width: 560px; margin-bottom: 1.5rem; }
+  .card-title { font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem; display: flex; align-items: center; gap: .5rem; }
+  .card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .field { margin-bottom: 1.2rem; }
+  label { display: block; font-size: .82rem; font-weight: 500; color: var(--muted); margin-bottom: .45rem; }
+  input, select, textarea { width: 100%; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: .7rem 1rem; color: var(--text); font-family: var(--sans); font-size: .95rem; outline: none; transition: border-color .2s, box-shadow .2s; }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.15); }
+  input.mono-field { font-family: var(--mono); letter-spacing: .05em; }
+  select option { background: #1e293b; }
+  textarea { resize: vertical; min-height: 68px; }
+  .hint { font-size: .75rem; color: var(--muted); margin-top: .35rem; }
+  .btn { width: 100%; padding: .8rem 1rem; border-radius: 10px; border: none; cursor: pointer; font-family: var(--sans); font-size: .95rem; font-weight: 600; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: .5rem; }
+  .btn-primary { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; }
+  .btn-primary:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text); font-size: .85rem; padding: .55rem 1rem; width: auto; border-radius: 8px; }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+  .loading .spinner { display: block; }
+  .loading .btn-label { display: none; }
+  .alert { border-radius: 10px; padding: .9rem 1.1rem; font-size: .88rem; margin-top: 1.2rem; display: none; line-height: 1.5; }
+  .alert.show { display: block; }
+  .alert-success { background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.35); color: #6ee7b7; }
+  .alert-error   { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.35);  color: #fca5a5; }
+  #order-result { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1.2rem; font-family: var(--mono); font-size: .8rem; color: var(--muted); white-space: pre-wrap; word-break: break-all; display: none; max-height: 200px; overflow-y: auto; }
+  .orders-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  th { text-align: left; padding: .55rem .8rem; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: .65rem .8rem; border-bottom: 1px solid rgba(31,45,69,.6); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(59,130,246,.04); }
+  .badge { display: inline-block; padding: .2rem .55rem; border-radius: 999px; font-size: .72rem; font-weight: 600; font-family: var(--mono); }
+  .badge-pending  { background: rgba(245,158,11,.15); color: var(--warn); }
+  .badge-complete { background: rgba(16,185,129,.15); color: var(--success); }
+  .badge-error    { background: rgba(239,68,68,.15);  color: var(--error); }
+  .serial-cell { font-family: var(--mono); font-size: .78rem; color: var(--muted); }
+  #orders-msg { color: var(--muted); font-size: .85rem; text-align: center; padding: 1.5rem 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="url(#g)"/>
+      <path d="M14 6c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 3a5 5 0 110 10A5 5 0 0114 9zm0 2a3 3 0 100 6 3 3 0 000-6z" fill="white" opacity=".9"/>
+      <defs><linearGradient id="g" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+    </svg>
+    RexActivator
+  </div>
+  <h1>Registro de Serial iPhone</h1>
+  <p class="subtitle">Envía el serial de tu dispositivo al servidor de activación</p>
+  <div id="balance-bar">💰 Balance: <span id="balance-val">cargando...</span></div>
+</header>
+
+<div class="card">
+  <div class="card-title">📱 Nueva Orden</div>
+  <div class="field">
+    <label for="serial">Serial / IMEI del iPhone</label>
+    <input id="serial" class="mono-field" type="text" placeholder="Ej. F2LX8XXXXXXX o 352XXXXXXXXXXX" maxlength="20" autocomplete="off" spellcheck="false">
+    <p class="hint">Configuración → General → Información</p>
+  </div>
+  <div class="field">
+    <label for="service">Servicio</label>
+    <select id="service"><option value="" disabled selected>Cargando servicios...</option></select>
+  </div>
+  <div class="field">
+    <label for="note">Nota (opcional)</label>
+    <textarea id="note" placeholder="Información adicional..."></textarea>
+  </div>
+  <button class="btn btn-primary" id="submit-btn" onclick="submitOrder()">
+    <div class="spinner"></div>
+    <span class="btn-label">🚀 Registrar Serial</span>
+  </button>
+  <div class="alert" id="order-alert"></div>
+  <pre id="order-result"></pre>
+</div>
+
+<div class="card">
+  <div class="orders-header">
+    <div class="card-title" style="margin-bottom:0">📋 Mis Órdenes</div>
+    <button class="btn btn-ghost" onclick="loadOrders()">↻ Actualizar</button>
+  </div>
+  <div class="table-wrap">
+    <table id="orders-table" style="display:none">
+      <thead><tr><th>#</th><th>Serial</th><th>Servicio</th><th>Estado</th><th>Fecha</th></tr></thead>
+      <tbody id="orders-body"></tbody>
+    </table>
+    <div id="orders-msg">Cargando órdenes...</div>
+  </div>
+</div>
+
+<script>
+// Llama al proxy de Netlify en lugar de a rexactivator directamente
+async function callProxy(apiPath, body) {
+  const res = await fetch('/.netlify/functions/proxy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path: apiPath, body: body || null })
+  });
+  return res.json();
+}
+
+function showAlert(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = `alert alert-${type} show`;
+  el.innerHTML = msg;
+}
+function hideAlert(id) { document.getElementById(id).className = 'alert'; }
+function setLoading(btnId, on) {
+  const btn = document.getElementById(btnId);
+  btn.classList.toggle('loading', on);
+  btn.disabled = on;
+}
+function statusBadge(status = '') {
+  const s = String(status).toLowerCase();
+  if (s.includes('complet') || s.includes('success') || s.includes('done'))
+    return `<span class="badge badge-complete">${status}</span>`;
+  if (s.includes('error') || s.includes('fail') || s.includes('cancel'))
+    return `<span class="badge badge-error">${status}</span>`;
+  return `<span class="badge badge-pending">${status || 'pending'}</span>`;
+}
+
+async function loadBalance() {
+  try {
+    const data = await callProxy('/functions', { functionName: 'getResellerBalance' });
+    const bal = data?.balance ?? data?.data?.balance ?? data?.credits ?? JSON.stringify(data);
+    document.getElementById('balance-val').textContent = bal;
+  } catch (e) {
+    document.getElementById('balance-val').textContent = 'error';
+  }
+}
+
+async function loadServices() {
+  const sel = document.getElementById('service');
+  try {
+    const data = await callProxy('/functions', { functionName: 'getResellerServices' });
+    const list = data?.services ?? data?.data?.services ?? data?.data ?? (Array.isArray(data) ? data : []);
+    sel.innerHTML = '';
+    if (!list.length) { sel.innerHTML = '<option value="1">Servicio por defecto (ID 1)</option>'; return; }
+    list.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.id ?? s.service_id ?? s.ID;
+      opt.textContent = `${opt.value} — ${s.name ?? s.service_name ?? s.title ?? 'Servicio'}`;
+      sel.appendChild(opt);
+    });
+  } catch (e) {
+    sel.innerHTML = '<option value="1">Servicio por defecto (ID 1)</option>';
+  }
+}
+
+async function submitOrder() {
+  const serial  = document.getElementById('serial').value.trim();
+  const service = document.getElementById('service').value;
+  const note    = document.getElementById('note').value.trim();
+  hideAlert('order-alert');
+  document.getElementById('order-result').style.display = 'none';
+  if (!serial)  { showAlert('order-alert', 'error', '⚠️ Ingresa el serial del iPhone.'); return; }
+  if (!service) { showAlert('order-alert', 'error', '⚠️ Selecciona un servicio.'); return; }
+  setLoading('submit-btn', true);
+  try {
+    const body = { functionName: 'submitSerialOrder', service_id: Number(service), serial };
+    if (note) body.note = note;
+    const data = await callProxy('/functions', body);
+    if (data.success || data.order_id || data.id || data.status === 'success') {
+      showAlert('order-alert', 'success', `✅ ¡Orden enviada! ID: <strong>${data.order_id ?? data.id ?? '—'}</strong>`);
+      document.getElementById('serial').value = '';
+      document.getElementById('note').value   = '';
+      loadOrders();
+    } else {
+      const msg = data?.message ?? data?.error ?? data?.msg ?? JSON.stringify(data);
+      showAlert('order-alert', 'error', `❌ Error: ${msg}`);
+    }
+    const result = document.getElementById('order-result');
+    result.textContent = JSON.stringify(data, null, 2);
+    result.style.display = 'block';
+  } catch (e) {
+    showAlert('order-alert', 'error', `❌ Error de conexión: ${e.message}`);
+  }
+  setLoading('submit-btn', false);
+}
+
+async function loadOrders() {
+  const msg = document.getElementById('orders-msg');
+  const table = document.getElementById('orders-table');
+  const tbody = document.getElementById('orders-body');
+  msg.textContent = 'Cargando órdenes...';
+  msg.style.display = 'block';
+  table.style.display = 'none';
+  try {
+    const data = await callProxy('/entities/order', null);
+    const list = data?.orders ?? data?.data ?? (Array.isArray(data) ? data : []);
+    if (!list.length) { msg.textContent = 'No hay órdenes registradas aún.'; return; }
+    tbody.innerHTML = list.map(o => `
+      <tr>
+        <td style="color:var(--muted);font-family:var(--mono)">#${o.id ?? o.order_id ?? '—'}</td>
+        <td class="serial-cell">${o.serial ?? '—'}</td>
+        <td>${o.service_name ?? o.service ?? o.service_id ?? '—'}</td>
+        <td>${statusBadge(o.status)}</td>
+        <td style="color:var(--muted);white-space:nowrap">${o.created_at ? new Date(o.created_at).toLocaleDateString('es-MX') : '—'}</td>
+      </tr>`).join('');
+    table.style.display = 'table';
+    msg.style.display = 'none';
+  } catch (e) {
+    msg.textContent = `Error al cargar órdenes: ${e.message}`;
+  }
+}
+
+document.getElementById('serial').addEventListener('keydown', e => { if (e.key === 'Enter') submitOrder(); });
+loadBalance();
+loadServices();
+loadOrders();
+</script>
+</body>
+</html>
