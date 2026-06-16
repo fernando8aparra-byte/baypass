@@ -350,6 +350,28 @@
         .notice-ok i { color: var(--green); }
         .notice-info { background: var(--blue-light); border: 1px solid #b0d4f7; color: #003d7a; }
         .notice-info i { color: var(--blue); }
+        .notice-no { background: var(--red-light); border: 1px solid #ffccd2; color: #721c24; }
+        .notice-no i { color: var(--red); }
+
+        .preview-container {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .preview-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-2);
+        }
+        .preview-img {
+            max-width: 260px;
+            height: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            display: block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
 
         .promo-box {
             background: linear-gradient(120deg, #003d8e, #0071e3);
@@ -525,22 +547,6 @@
             .card { padding: 20px; }
             .hero { padding: 40px 20px 32px; }
         }
-        
-        /* Contenedor responsivo para las imágenes en las alertas */
-        .mdm-image-container {
-            width: 100%;
-            max-width: 320px;
-            margin: 14px auto 4px auto;
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: block;
-        }
-        .mdm-image-container img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -566,9 +572,9 @@
         </div>
     </div>
     <div class="menu-nav">
-        <a href="index.html"    class="menu-link"><i class="fas fa-house"></i> Inicio</a>
+        <a href="index.html"    class="menu-link active"><i class="fas fa-house"></i> Inicio</a>
         <a href="nosotros.html" class="menu-link"><i class="fas fa-circle-info"></i> Nosotros</a>
-        <a href="compa.html"    class="menu-link active"><i class="fas fa-mobile-screen-button"></i> Compatibilidad</a>
+        <a href="compa.html"    class="menu-link"><i class="fas fa-mobile-screen-button"></i> Compatibilidad</a>
         <a href="riesgos-apple.html" class="menu-link"><i class="fas fa-triangle-exclamation"></i> Riesgos</a>
         <a href="terminos.html" class="menu-link"><i class="fas fa-file-lines"></i> Términos</a>
         <a href="login.html"    class="menu-link" id="auth-menu-item"><i class="fas fa-right-to-bracket"></i> Iniciar sesión</a>
@@ -631,7 +637,7 @@
             </div>
         </div>
         <div style="margin-top:18px; text-align:center;" id="no-se-btn">
-            <a href="https://wa.me/526624672947?text=%C2%A1Hola%21+No+s%C3%A9+cu%C3%A1l+es+el+modelo+de+mi+iPhone%2C+%C2%BFpueden+ayudarme+a+identificarlo%3F" target="_blank" class="btn btn-secondary" style="display:inline-flex; max-width:340px; font-size:14px;">
+            <a href="https://wa.me/526624639310?text=%C2%A1Hola%21+No+s%C3%A9+cu%C3%A1l+es+el+modelo+de+mi+iPhone%2C+%C2%BFpueden+ayudarme+a+identificarlo%3F" target="_blank" class="btn btn-secondary" style="display:inline-flex; max-width:340px; font-size:14px;">
                 <i class="fab fa-whatsapp" style="color:#25D366;"></i> No sé el modelo exacto, necesito ayuda
             </a>
         </div>
@@ -642,7 +648,7 @@
         <div class="card-title"><i class="fas fa-circle-question"></i> Pregunta importante</div>
         <div class="question-box">
             <strong>¿En qué estado está tu iPhone?</strong>
-            Para el Bypass iCloud en modelos iPhone 11 en adelante, el teléfono debe estar en la pantalla <b>"Hola / Hello"</b> y con iOS 16.7.x o anterior.
+            Para el Bypass iCloud el teléfono debe estar obligatoriamente en la pantalla de activación inicial <b>"Hola / Hello"</b>.
         </div>
         <div class="hello-opts">
             <div class="hello-opt" id="opt-si">
@@ -676,7 +682,7 @@
         <!-- Notices -->
         <div id="res-notices"></div>
 
-        <!-- Promo box (conditional) -->
+        <!-- Promo box -->
         <div id="res-promo" style="display:none;"></div>
 
         <!-- Detail list -->
@@ -687,9 +693,9 @@
     </div>
 
     <!-- INFO TABS CARD -->
-    <div class="card">
+    <div class="card" id="tabs-card">
         <div class="tabs">
-            <div class="tab active" data-tab="comparar">Comparar métodos</div>
+            <div class="tab active" data-tab="comparar" id="tab-header-comparar">Comparar métodos</div>
             <div class="tab" data-tab="modelos">Modelos compatibles</div>
             <div class="tab" data-tab="proceso">¿Cómo funciona?</div>
         </div>
@@ -709,10 +715,10 @@
                     <tr><td>Señal celular</td><td>Solo modelos hasta iPhone X</td><td><span class="badge badge-green">✅ Siempre</span></td></tr>
                     <tr><td>Wi-Fi / Apps</td><td><span class="badge badge-green">✅ Sí</span></td><td><span class="badge badge-green">✅ Sí</span></td></tr>
                     <tr><td>iCloud completo</td><td><span class="badge badge-red">✗ No</span></td><td><span class="badge badge-green">✅ Sí</span></td></tr>
-                    <tr><td>Actualizaciones iOS</td><td><span class="badge badge-red">✗ No (se pierde acceso)</span></td><td><span class="badge badge-red">✗ No (se vuelve a bloquear)</span></td></tr>
+                    <tr><td>Actualizaciones iOS</td><td><span class="badge badge-red">✗ No (se pierde acceso)</span></td><td><span class="badge badge-red">✗ No (se pierde acceso)</span></td></tr>
                     <tr><td>Precio</td><td>Desde 550 MXN</td><td>$650 MXN</td></tr>
-                    <tr><td>Tiempo</td><td>Pocas horas</td><td>Varios días</td></tr>
-                    <tr><td>Ideal para</td><td>Redes sociales, WhatsApp, apps</td><td>Uso provisional completo</td></tr>
+                    <tr><td>Tiempo de desbloqueo</td><td>Pocas horas</td><td>10–40 minutos</td></tr>
+                    <tr><td>Ideal para</td><td>Redes sociales, WhatsApp, apps</td><td>Vender o uso completo</td></tr>
                 </tbody>
             </table>
         </div>
@@ -721,12 +727,11 @@
         <div class="tab-panel" id="tab-modelos">
             <div style="margin-bottom:14px;">
                 <div class="notice notice-ok"><i class="fas fa-signal"></i><span><strong>Con señal celular (Bypass):</strong> iPhone 6s, 6s Plus, SE 1ª gen, 7, 7 Plus, 8, 8 Plus, X</span></div>
-                <div class="notice notice-warn"><i class="fas fa-wifi"></i><span><strong>Solo Wi-Fi (Bypass):</strong> iPhone XR, XS, XS Max, 11 y todos los modelos más nuevos. Sin señal celular, pero funciona bien para redes sociales, apps, juegos.</span></div>
-                <div class="notice notice-info"><i class="fas fa-unlock"></i><span><strong>MDM / Administración Remota:</strong> Compatible con la mayoría de modelos iPhone 6s al 16. Verificación de IMEI previa requerida.</span></div>
+                <div class="notice notice-warn"><i class="fas fa-wifi"></i><span><strong>Solo Wi-Fi (Bypass):</strong> iPhone XR en adelante. Requieren versiones específicas de iOS según el modelo.</span></div>
             </div>
             <table class="comp-table">
                 <thead>
-                    <tr><th>Modelo</th><th>Bypass iCloud</th><th>Señal (Bypass)</th><th>Raíz</th></tr>
+                    <tr><th>Modelo</th><th>Bypass iCloud</th><th>Señal (Bypass)</th><th>Raíz / MDM</th></tr>
                 </thead>
                 <tbody id="models-tbody"></tbody>
             </table>
@@ -734,31 +739,10 @@
 
         <!-- TAB: Proceso -->
         <div class="tab-panel" id="tab-proceso">
-            <div class="detail-list">
-                <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
-                    <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">1</div>
-                    <div style="font-weight:600; margin-bottom:4px;">Selecciona tu modelo arriba</div>
-                    <div style="font-size:14px; color:var(--text-2);">Elige tu iPhone y el tipo de desbloqueo para ver el resultado personalizado.</div>
-                </div>
-                <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
-                    <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">2</div>
-                    <div style="font-weight:600; margin-bottom:4px;">Contáctanos por WhatsApp</div>
-                    <div style="font-size:14px; color:var(--text-2);">Manda fotos de la pantalla de tu iPhone. Verificamos compatibilidad y te damos precio final.</div>
-                </div>
-                <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
-                    <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">3</div>
-                    <div style="font-weight:600; margin-bottom:4px;">Pago y proceso</div>
-                    <div style="font-size:14px; color:var(--text-2);">Una vez confirmado, realizas el pago y nosotros hacemos el proceso de forma remota (tú no tienes que traer el teléfono a ningún lado).</div>
-                </div>
-                <div style="position:relative; padding-left: 32px;">
-                    <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--green); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">✓</div>
-                    <div style="font-weight:600; margin-bottom:4px;">¡Listo! Tu iPhone desbloqueado</div>
-                    <div style="font-size:14px; color:var(--text-2);">Te guiamos paso a paso para activar el desbloqueo en tu dispositivo. Soporte incluido.</div>
-                </div>
-            </div>
-            <div class="notice notice-info" style="margin-top:16px;">
+            <div class="detail-list" id="proceso-dinamico-list"></div>
+            <div class="notice notice-info" style="margin-top:16px;" id="proceso-notice-footer">
                 <i class="fas fa-shield-halved"></i>
-                <span>Reembolso garantizado en caso de incompatibilidad técnica confirmada (Desbloqueo de Raíz). El proceso de Bypass iCloud puede rehacerse si el teléfono se resetea.</span>
+                <span>Reembolso garantizado en caso de incompatibilidad técnica confirmada. Los procesos de Bypass tanto de iCloud como de MDM pueden rehacerse si el teléfono se resetea.</span>
             </div>
         </div>
     </div>
@@ -778,13 +762,13 @@
 <!-- FLOATING WA -->
 <div class="help-floating">
     <div class="help-label" id="wa-label" style="display:none;">¿Tienes dudas?</div>
-    <a href="https://wa.me/526624672947" target="_blank" class="wa-btn" id="wa-float">
+    <a href="https://wa.me/526624639310" target="_blank" class="wa-btn" id="wa-float">
         <i class="fab fa-whatsapp"></i>
     </a>
 </div>
 
 <script>
-const WA = "526624672947";
+const WA = "526624639310";
 
 // ─── DATA ───────────────────────────────────────────────
 const MODELOS = {
@@ -821,6 +805,15 @@ const HELLO_MODELS = new Set([
     "iPhone 17","iPhone 17 Pro","iPhone 17 Pro Max"
 ]);
 
+// Helper para determinar el requerimiento de versión de iOS según el modelo
+function obtenerIosRequerido(modelo) {
+    const grupo18 = new Set(["iPhone XR", "iPhone XS", "iPhone XS Max"]);
+    if (grupo18.has(modelo)) {
+        return "18.7.3";
+    }
+    return "26.1 o inferior";
+}
+
 // ─── SELECTS ───────────────────────────────────────────
 const selMarca = document.getElementById('sel-marca');
 const selTipo  = document.getElementById('sel-tipo');
@@ -845,7 +838,7 @@ selMarca.addEventListener('change', () => {
 
     if (!marca) return;
     const tipos = Object.keys(MODELOS[marca] || {});
-    const LABELS = { telefono:'Teléfono', tablet:'Tablet / iPad', laptop:'Laptop' };
+    const LABELS = { telefono:'Teléfono', tablet:'Tablet / iPad' };
     tipos.forEach(t => {
         const o = document.createElement('option');
         o.value = t; o.textContent = LABELS[t] || t;
@@ -854,10 +847,9 @@ selMarca.addEventListener('change', () => {
     selTipo.disabled = false;
     if (tipos.length === 1) { selTipo.value = tipos[0]; selTipo.dispatchEvent(new Event('change')); }
 
-    // Desbloqueo options
     resetSelect(selDes, 'Elige tipo de desbloqueo');
     const des = marca === 'apple'
-        ? ['Bypass iCloud','MDM / Administración Remota']
+        ? ['Bypass iCloud','MDM / Administración Remota', 'Quiero restablecerlo']
         : ['FRP / Cuenta Google','Pantalla de bloqueo'];
     des.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; selDes.appendChild(o); });
     selDes.disabled = true;
@@ -891,7 +883,16 @@ selDes.addEventListener('change', () => {
 });
 
 // ─── HELLO ─────────────────────────────────────────────
-function showHello() { document.getElementById('hello-section').style.display = 'block'; }
+function showHello() { 
+    const modelo = selMod.value;
+    const iosReq = obtenerIosRequerido(modelo);
+    const qBox = document.querySelector('#hello-section .question-box');
+    
+    qBox.innerHTML = `<strong>¿En qué estado está tu iPhone?</strong>
+    Para el Bypass iCloud en ${modelo}, el teléfono debe estar en la pantalla <b>"Hola / Hello"</b> y contar con <b>iOS ${iosReq}</b>.`;
+    
+    document.getElementById('hello-section').style.display = 'block'; 
+}
 function hideHello() { document.getElementById('hello-section').style.display = 'none'; }
 function hideResult() { document.getElementById('result-section').style.display = 'none'; }
 
@@ -903,9 +904,7 @@ function hideResult() { document.getElementById('result-section').style.display 
         helloAnswer = val;
         helloAnswered = true;
         hideHello();
-        if (val === 'no') {
-            selDes.value = 'MDM / Administración Remota';
-        }
+        
         if (val === 'ns') {
             const url = waURL(`\n\nNo sé si está en pantalla "Hello" con iOS compatible. ¿Pueden confirmar si es compatible con Bypass iCloud?`);
             window.open(url, '_blank');
@@ -936,6 +935,7 @@ function updateResult() {
 
     hideHello();
     buildResult(marca, modelo, des);
+    actualizarSeccionAyuda(marca, des);
 }
 
 function buildResult(marca, modelo, des) {
@@ -960,8 +960,39 @@ function buildResult(marca, modelo, des) {
 
     if (marca === 'apple') {
         if (des === 'Bypass iCloud') {
+            
+            // CASO: EL USUARIO DIJO QUE NO TIENE PANTALLA HELLO / TIENE VERSIÓN RECIENTE
+            if (helloAnswer === 'no') {
+                icon.className = 'result-icon icon-no';
+                icon.innerHTML = '<i class="fas fa-circle-xmark"></i>';
+                title.textContent = 'Dispositivo No Compatible';
+                sub.textContent = modelo;
+
+                chips.innerHTML = `
+                    <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">Bypass iCloud</div></div>
+                    <div class="info-chip"><div class="chip-label">Estado</div><div class="chip-value">iOS Reciente / Configurado</div></div>
+                `;
+
+                notices.innerHTML = `
+                    <div class="notice notice-no">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <span>Tu dispositivo ya no se puede desbloquear. Estamos trabajando para proporcionar un nuevo método lo antes posible.</span>
+                    </div>
+                `;
+
+                cta.innerHTML = `
+                    <a href="${waURL(`\n\nMi ${modelo} tiene una versión de iOS muy reciente o ya está configurado. Avísenme cuando tengan un nuevo método.`)}" target="_blank" class="btn btn-secondary"><i class="fab fa-whatsapp"></i> Notificarme de nuevos métodos</a>
+                `;
+                
+                sec.style.display = 'block';
+                sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            // CASO: COMPATIBLE NORMAL (O SI RESPONDIÓ "SÍ")
             const tieneSenal = CON_SENAL.has(modelo);
             const needsHello = HELLO_MODELS.has(modelo);
+            const iosReq = obtenerIosRequerido(modelo);
 
             icon.className = 'result-icon icon-ok';
             icon.innerHTML = '<i class="fas fa-circle-check"></i>';
@@ -972,16 +1003,24 @@ function buildResult(marca, modelo, des) {
                 <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">Bypass iCloud</div></div>
                 <div class="info-chip"><div class="chip-label">Señal celular</div><div class="chip-value">${tieneSenal ? '✅ Incluida' : '❌ Solo Wi-Fi'}</div></div>
                 <div class="info-chip"><div class="chip-label">Permanencia</div><div class="chip-value">⚡ Temporal</div></div>
-                <div class="info-chip"><div class="chip-label">Tiempo</div><div class="chip-value">Pocas horas</div></div>
+                <div class="info-chip"><div class="chip-label">Tiempo de desbloqueo</div><div class="chip-value">Pocas horas</div></div>
             `;
 
-            if (needsHello) {
-                if (helloAnswer === 'ns') {
-                    notices.innerHTML += `<div class="notice notice-warn"><i class="fas fa-triangle-exclamation"></i><span>Ya enviamos un mensaje por WhatsApp para verificar tu caso. Si no se abrió, usa el botón de abajo.</span></div>`;
-                } else {
-                    const versionText = 'iOS 16.7.x o anterior';
-                    notices.innerHTML += `<div class="notice notice-warn"><i class="fas fa-triangle-exclamation"></i><span>Requiere pantalla "Hello" con <strong>${versionText}</strong>. Si el dispositivo ya está configurado, no aplica Bypass.</span></div>`;
-                }
+            if (needsHello && helloAnswer === 'ns') {
+                notices.innerHTML += `<div class="notice notice-warn"><i class="fas fa-triangle-exclamation"></i><span>Ya enviamos un mensaje por WhatsApp para verificar tu caso. Si no se abrió, usa el botón de abajo.</span></div>`;
+            } else {
+                const textoVersion = needsHello ? ` con <strong>iOS ${iosReq}</strong>` : '';
+                notices.innerHTML += `
+                    <div class="notice notice-warn">
+                        <i class="fas fa-triangle-exclamation"></i>
+                        <span>
+                            <span>El terminal debe estar congelado en la pantalla de inicio inicial <strong>"Hola / Hello"</strong>${textoVersion}. Si ya se encuentra configurado en el menú, este método no aplicará.</span>
+                            <div class="preview-container">
+                                <span class="preview-label">Muestra de pantalla requerida:</span>
+                                <img class="preview-img" src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/IMG_0451.jpeg?alt=media&token=9e2872b0-77aa-40aa-8a58-ba8603a398ba" alt="Muestra Pantalla Hello">
+                            </div>
+                        </span>
+                    </div>`;
             }
 
             notices.innerHTML += `<div class="notice notice-warn"><i class="fas fa-rotate-right"></i><span><strong>No es permanente:</strong> si reinicias, formateas o actualizas el iPhone, el bloqueo iCloud regresa y debes repetir el proceso.</span></div>`;
@@ -990,7 +1029,6 @@ function buildResult(marca, modelo, des) {
                 notices.innerHTML += `<div class="notice notice-info"><i class="fas fa-wifi"></i><span>Sin señal celular en ${modelo}, pero puedes usar <strong>WhatsApp, Instagram, TikTok, App Store, juegos y más</strong> por Wi-Fi.</span></div>`;
             }
 
-            // Promo
             const precio = isSat ? 550 : 700;
             promo.style.display = 'block';
             promo.innerHTML = `
@@ -1017,45 +1055,70 @@ function buildResult(marca, modelo, des) {
             `;
 
         } else if (des === 'MDM / Administración Remota') {
-            icon.className = 'result-icon icon-ok';
-            icon.innerHTML = '<i class="fas fa-circle-check"></i>';
-            title.textContent = 'Compatible — Salto de MDM';
+            icon.className = 'result-icon icon-warn';
+            icon.innerHTML = '<i class="fas fa-unlock-keyhole"></i>';
+            title.textContent = 'Compatible — Salto de MDM (Bypass)';
             sub.textContent = modelo;
 
             chips.innerHTML = `
-                <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">Bypass MDM</div></div>
+                <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">Bypass MDM Corporativo</div></div>
                 <div class="info-chip"><div class="chip-label">Señal celular</div><div class="chip-value">✅ Incluida</div></div>
                 <div class="info-chip"><div class="chip-label">Permanencia</div><div class="chip-value">⚡ Temporal</div></div>
-                <div class="info-chip"><div class="chip-label">Tiempo</div><div class="chip-value">10–40 minutos</div></div>
+                <div class="info-chip"><div class="chip-label">Tiempo de desbloqueo</div><div class="chip-value">10–40 minutos</div></div>
             `;
 
             notices.innerHTML = `
-                <div class="notice notice-warn"><i class="fas fa-rotate-right"></i><span><strong>¡Atención! Este proceso NO es permanente.</strong> Si restauras de fábrica, formateas o actualizas la versión de iOS de tu iPhone, la pantalla de supervisión corporativa volverá a aparecer y se bloqueará de nuevo.</span></div>
-                <div class="notice notice-info"><i class="fas fa-images"></i><span>
-                    <strong>¿Tu pantalla se ve como esta?</strong> Si muestra "Administración Remota" o un bloqueo de empresa, este servicio te permite saltarlo.
-                    <div class="mdm-image-container">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/baypass%2Fmdm%2Fmdm.jpeg?alt=media&token=ce938dc0-a917-455a-9b54-8b6db8990d57" alt="Pantalla de bloqueo MDM Apple">
-                    </div>
-                </span></div>
+                <div class="notice notice-warn">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <span>
+                        <span>El terminal debe mostrar obligatoriamente la ventana bloqueada de <strong>Administración Remota corporativa</strong> para poder saltarla.</span>
+                        <div class="preview-container">
+                            <span class="preview-label">Muestra de pantalla requerida:</span>
+                            <img class="preview-img" src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/baypass%2Fmdm%2Fmdm.jpeg?alt=media&token=ce938dc0-a917-455a-9b54-8b6db8990d57" alt="Muestra Bloqueo MDM">
+                        </div>
+                    </span>
+                </div>
+                <div class="notice notice-warn"><i class="fas fa-rotate-right"></i><span><strong>No es permanente:</strong> El proceso remueve la pantalla de bloqueo de empresa, pero si restauras o actualizas el iPhone, volverá a pedir la cuenta corporativa.</span></div>
             `;
 
             details.innerHTML = `
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Permite saltar el bloqueo de supervisión corporativa</span></li>
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Señal celular completa (Llamadas, SMS y Datos móviles)</span></li>
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Puedes vincular tu propia cuenta de iCloud temporalmente</span></li>
-                <li class="bad"><i class="fas fa-times-circle"></i><span>No se puede formatear ni restablecer (se bloquea de nuevo)</span></li>
-                <li class="bad"><i class="fas fa-times-circle"></i><span>No se puede actualizar el sistema iOS (se bloquea de nuevo)</span></li>
-                <li class="info"><i class="fas fa-info-circle"></i><span>Proceso 100% remoto mediante herramienta de PC/Mac</span></li>
+                <li class="ok"><i class="fas fa-check-circle"></i><span>Acceso al sistema y uso de tu propio iCloud completo</span></li>
+                <li class="ok"><i class="fas fa-check-circle"></i><span>Señal celular activa para llamadas y datos</span></li>
+                <li class="bad"><i class="fas fa-times-circle"></i><span>No se puede formatear de fábrica (el bloqueo MDM regresa)</span></li>
+                <li class="bad"><i class="fas fa-times-circle"></i><span>No se recomienda actualizar versiones de iOS principales</span></li>
             `;
 
             cta.innerHTML = `
-                <a href="${waURL(`\n\nQuiero agendar cita de desbloqueo de MDM para ${modelo}. Entiendo que no es permanente y que si actualizo o formateo se vuelve a bloquear.`)}" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> 📅 Agendar cita de desbloqueo</a>
-                <a href="riesgos-apple.html" class="btn btn-secondary"><i class="fas fa-circle-info"></i> Ver detalles</a>
+                <a href="${waURL(`\n\nQuiero cotizar Bypass MDM para ${modelo}. ¿Cómo inicio el proceso?`)}" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> 📅 Agendar cita de desbloqueo</a>
+                <a href="riesgos-apple.html" class="btn btn-secondary"><i class="fas fa-circle-info"></i> Ver riesgos</a>
+            `;
+        } else if (des === 'Quiero restablecerlo') {
+            icon.className = 'result-icon icon-warn';
+            icon.innerHTML = '<i class="fas fa-rotate"></i>';
+            title.textContent = 'Restablecimiento de Fábrica';
+            sub.textContent = modelo;
+
+            chips.innerHTML = `
+                <div class="info-chip"><div class="chip-label">Acción</div><div class="chip-value">Restablecimiento Completo</div></div>
+                <div class="info-chip"><div class="chip-label">Tiempo estimado</div><div class="chip-value">1 a 2 horas máximo</div></div>
+            `;
+
+            notices.innerHTML = `
+                <div class="notice notice-warn"><i class="fas fa-triangle-exclamation"></i><span><strong>¡Atención!</strong> Se le borrará absolutamente todo el contenido y configuraciones al dispositivo.</span></div>
+                <div class="notice notice-info"><i class="fas fa-arrow-up-from-bracket"></i><span>El iPhone se actualizará de forma obligatoria hasta la versión más reciente de iOS disponible.</span></div>
+            `;
+
+            details.innerHTML = `
+                <li class="ok"><i class="fas fa-circle-check"></i><span>Podrá usar el teléfono normalmente y sin problemas después del proceso.</span></li>
+                <li class="info"><i class="fas fa-info-circle"></i><span>Ideal si olvidó su código de pantalla o quiere limpiar el sistema de raíz.</span></li>
+            `;
+
+            cta.innerHTML = `
+                <a href="${waURL(`\n\nQuiero realizar un Restablecimiento de Fábrica para mi ${modelo}.`)}" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> Solicitar Restablecimiento</a>
             `;
         }
 
     } else {
-        // Android
         icon.className = 'result-icon icon-ok';
         icon.innerHTML = '<i class="fas fa-circle-check"></i>';
         title.textContent = 'Posiblemente compatible';
@@ -1074,7 +1137,79 @@ function buildResult(marca, modelo, des) {
     sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// ─── TABS ──────────────────────────────────────────────
+// ─── LÓGICA DINÁMICA DE TABS E INFORMACIÓN ─────────────────
+function actualizarSeccionAyuda(marca, des) {
+    const tabCompararHeader = document.getElementById('tab-header-comparar');
+    const tabCompararPanel = document.getElementById('tab-comparar');
+    const listaProceso = document.getElementById('proceso-dinamico-list');
+    const noticeFooter = document.getElementById('proceso-notice-footer');
+
+    if (marca !== 'apple' || des === 'Quiero restablecerlo') {
+        tabCompararHeader.style.display = 'none';
+        if(tabCompararHeader.classList.contains('active')) {
+            tabCompararHeader.classList.remove('active');
+            tabCompararPanel.classList.remove('active');
+            document.querySelector('[data-tab="modelos"]').classList.add('active');
+            document.getElementById('tab-modelos').classList.add('active');
+        }
+    } else {
+        tabCompararHeader.style.display = 'block';
+    }
+
+    if (des === 'Quiero restablecerlo') {
+        listaProceso.innerHTML = `
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">1</div>
+                <div style="font-weight:600; margin-bottom:4px;">Solicitud del servicio</div>
+                <div style="font-size:14px; color:var(--text-2);">Presiona el botón de WhatsApp para comunicarte con nuestro soporte técnico especializado.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">2</div>
+                <div style="font-weight:600; margin-bottom:4px;">Conexión y Preparación</div>
+                <div style="font-size:14px; color:var(--text-2);">Te indicaremos los requerimientos necesarios para realizar el borrado completo de forma segura.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">3</div>
+                <div style="font-weight:600; margin-bottom:4px;">Proceso de Ejecución</div>
+                <div style="font-size:14px; color:var(--text-2);">En un lapso de 1 a 2 horas tu iPhone se formateará y actualizará a su última versión oficial.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--green); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">✓</div>
+                <div style="font-weight:600; margin-bottom:4px;">¡Dispositivo Listo!</div>
+                <div style="font-size:14px; color:var(--text-2);">El teléfono encenderá limpio y podrás configurarlo normalmente desde cero.</div>
+            </div>
+        `;
+        noticeFooter.innerHTML = `<i class="fas fa-circle-info"></i><span>Nota: Este proceso remueve fallos de software, contraseñas de pantalla y borra datos, no remueve bloqueos MDM ni Bypass activos de forma permanente si el dispositivo cuenta con reporte previo.</span>`;
+    } else {
+        listaProceso.innerHTML = `
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">1</div>
+                <div style="font-weight:600; margin-bottom:4px;">Selecciona tu modelo arriba</div>
+                <div style="font-size:14px; color:var(--text-2);">Elige tu iPhone y el tipo de desbloqueo para ver el resultado personalizado.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">2</div>
+                <div style="font-weight:600; margin-bottom:4px;">Contáctanos por WhatsApp</div>
+                <div style="font-size:14px; color:var(--text-2);">Manda fotos de la pantalla de tu iPhone. Verificamos compatibilidad y te damos precio final.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px; margin-bottom:20px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--blue); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">3</div>
+                <div style="font-weight:600; margin-bottom:4px;">Pago y proceso</div>
+                <div style="font-size:14px; color:var(--text-2);">Una vez confirmado, realizas el pago y nosotros hacemos el proceso correspondiente de manera presencial.</div>
+            </div>
+            <div style="position:relative; padding-left: 32px;">
+                <div style="position:absolute; left:0; top:0; width:22px; height:22px; background:var(--green); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;">✓</div>
+                <div style="font-weight:600; margin-bottom:4px;">¡Listo! Tu iPhone desbloqueado</div>
+                <div style="font-size:14px; color:var(--text-2);">Te guiamos paso a paso para activar el desbloqueo en tu dispositivo. Soporte incluido.</div>
+            </div>
+        `;
+        noticeFooter.innerHTML = `<i class="fas fa-shield-halved"></i><span>Reembolso garantizado en caso de incompatibilidad técnica confirmada. El proceso de Bypass iCloud o MDM puede rehacerse si el teléfono se resetea.</span>`;
+    }
+}
+
+actualizarSeccionAyuda('','');
+
+// ─── TABS EVENT LISTENER ──────────────────────────────────
 document.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
@@ -1086,19 +1221,18 @@ document.querySelectorAll('.tab').forEach(t => {
 
 // ─── MODELS TABLE ──────────────────────────────────────
 const allModels = [
-    ...["iPhone 6s","iPhone 6s Plus","iPhone SE (1ª gen)","iPhone 7","iPhone 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X"].map(m => ({m, bypass:true, senal:true, raiz:true})),
-    ...["iPhone XR","iPhone XS","iPhone XS Max","iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max"].map(m => ({m, bypass:true, senal:false, raiz:true})),
-    ...["iPhone SE (2ª gen)","iPhone 12 Mini","iPhone 12","iPhone 12 Pro","iPhone 12 Pro Max","iPhone 13 Mini","iPhone 13","iPhone 13 Pro","iPhone 13 Pro Max"].map(m => ({m, bypass:true, senal:false, raiz:true})),
-    ...["iPhone SE (3ª gen)","iPhone 14","iPhone 14 Plus","iPhone 14 Pro","iPhone 14 Pro Max","iPhone 15","iPhone 15 Plus","iPhone 15 Pro","iPhone 15 Pro Max"].map(m => ({m, bypass:true, senal:false, raiz:true})),
-    ...["iPhone 16","iPhone 16 Plus","iPhone 16 Pro","iPhone 16 Pro Max"].map(m => ({m, bypass:true, senal:false, raiz:'consultar'})),
+    ...["iPhone 6s","iPhone 6s Plus","iPhone SE (1ª gen)","iPhone 7","iPhone 7 Plus","iPhone 8","iPhone 8 Plus","iPhone X"].map(m => ({m, bypass:true, senal:true, raiz:true, note:""})),
+    ...["iPhone XR","iPhone XS","iPhone XS Max"].map(m => ({m, bypass:true, senal:false, raiz:true, note:"iOS 18.7.3"})),
+    ...["iPhone 11","iPhone 11 Pro","iPhone 11 Pro Max","iPhone SE (2ª gen)","iPhone 12 Mini","iPhone 12","iPhone 12 Pro","iPhone 12 Pro Max","iPhone 13 Mini","iPhone 13","iPhone 13 Pro","iPhone 13 Pro Max","iPhone SE (3ª gen)","iPhone 14","iPhone 14 Plus","iPhone 14 Pro","iPhone 14 Pro Max","iPhone 15","iPhone 15 Plus","iPhone 15 Pro","iPhone 15 Pro Max","iPhone 16","iPhone 16 Plus","iPhone 16 Pro","iPhone 16 Pro Max","iPhone 17","iPhone 17 Pro","iPhone 17 Pro Max"].map(m => ({m, bypass:true, senal:false, raiz:true, note:"≤ iOS 26.1"})),
 ];
 const tbody = document.getElementById('models-tbody');
-allModels.forEach(({m, bypass, senal, raiz}) => {
+allModels.forEach(({m, bypass, senal, raiz, note}) => {
+    const tagVer = note ? `<br><small style="color:var(--text-2); font-size:11px;">${note}</small>` : '';
     tbody.innerHTML += `<tr>
-        <td style="font-weight:500;">${m}</td>
+        <td style="font-weight:500;">${m}${tagVer}</td>
         <td>${bypass ? '<span class="badge badge-green">✅ Sí</span>' : '<span class="badge badge-red">✗ No</span>'}</td>
         <td>${senal ? '<span class="badge badge-green">✅ Sí</span>' : '<span class="badge badge-orange">Wi-Fi</span>'}</td>
-        <td>${raiz === 'consultar' ? '<span class="badge badge-orange">Consultar</span>' : raiz ? '<span class="badge badge-green">✅ Sí</span>' : '<span class="badge badge-red">✗ No</span>'}</td>
+        <td>${raiz ? '<span class="badge badge-orange">Bypass</span>' : '<span class="badge badge-red">✗ No</span>'}</td>
     </tr>`;
 });
 
@@ -1111,10 +1245,7 @@ overlayEl.addEventListener('click', closeMenu);
 function openMenu()  { menuEl.classList.add('open'); overlayEl.classList.add('show'); }
 function closeMenu() { menuEl.classList.remove('open'); overlayEl.classList.remove('show'); }
 
-// ─── WA FLOAT LABEL ────────────────────────────────────
 setTimeout(() => document.getElementById('wa-label').style.display = 'block', 3000);
-
-// ─── FIREBASE AUTH ─────────────────────────────────────
 </script>
 
 <script type="module">
