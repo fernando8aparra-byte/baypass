@@ -525,6 +525,22 @@
             .card { padding: 20px; }
             .hero { padding: 40px 20px 32px; }
         }
+        
+        /* Contenedor responsivo para las imágenes en las alertas */
+        .mdm-image-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 14px auto 4px auto;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: block;
+        }
+        .mdm-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -689,14 +705,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Duración</td><td><span class="badge badge-orange">⚡ Temporal</span></td><td><span class="badge badge-green">✅ Permanente</span></td></tr>
+                    <tr><td>Duración</td><td><span class="badge badge-orange">⚡ Temporal</span></td><td><span class="badge badge-orange">⚡ Temporal</span></td></tr>
                     <tr><td>Señal celular</td><td>Solo modelos hasta iPhone X</td><td><span class="badge badge-green">✅ Siempre</span></td></tr>
                     <tr><td>Wi-Fi / Apps</td><td><span class="badge badge-green">✅ Sí</span></td><td><span class="badge badge-green">✅ Sí</span></td></tr>
                     <tr><td>iCloud completo</td><td><span class="badge badge-red">✗ No</span></td><td><span class="badge badge-green">✅ Sí</span></td></tr>
-                    <tr><td>Actualizaciones iOS</td><td><span class="badge badge-red">✗ No (se pierde acceso)</span></td><td><span class="badge badge-green">✅ Sí</span></td></tr>
+                    <tr><td>Actualizaciones iOS</td><td><span class="badge badge-red">✗ No (se pierde acceso)</span></td><td><span class="badge badge-red">✗ No (se vuelve a bloquear)</span></td></tr>
                     <tr><td>Precio</td><td>Desde 550 MXN</td><td>$650 MXN</td></tr>
                     <tr><td>Tiempo</td><td>Pocas horas</td><td>Varios días</td></tr>
-                    <tr><td>Ideal para</td><td>Redes sociales, WhatsApp, apps</td><td>Vender o uso completo</td></tr>
+                    <tr><td>Ideal para</td><td>Redes sociales, WhatsApp, apps</td><td>Uso provisional completo</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1002,33 +1018,39 @@ function buildResult(marca, modelo, des) {
 
         } else if (des === 'MDM / Administración Remota') {
             icon.className = 'result-icon icon-ok';
-            icon.innerHTML = '<i class="fas fa-unlock"></i>';
-            title.textContent = 'Compatible — Desbloqueo Permanente';
+            icon.innerHTML = '<i class="fas fa-circle-check"></i>';
+            title.textContent = 'Compatible — Salto de MDM';
             sub.textContent = modelo;
 
             chips.innerHTML = `
-                <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">MDM / Administración Remota</div></div>
+                <div class="info-chip"><div class="chip-label">Método</div><div class="chip-value">Bypass MDM</div></div>
                 <div class="info-chip"><div class="chip-label">Señal celular</div><div class="chip-value">✅ Incluida</div></div>
-                <div class="info-chip"><div class="chip-label">Permanencia</div><div class="chip-value">⚠️ No permanente</div></div>
+                <div class="info-chip"><div class="chip-label">Permanencia</div><div class="chip-value">⚡ Temporal</div></div>
                 <div class="info-chip"><div class="chip-label">Tiempo</div><div class="chip-value">10–40 minutos</div></div>
             `;
 
             notices.innerHTML = `
-                <div class="notice notice-ok"><i class="fas fa-shield-halved"></i><span>Una vez realizado, el iPhone queda <strong>100% libre para siempre</strong>: señal, iCloud, actualizaciones oficiales. Nunca vuelve a bloquearse.</span></div>
-                <div class="notice notice-info"><i class="fas fa-id-card"></i><span>Requiere <strong>verificación previa del IMEI</strong> — costo $150 MXN no reembolsable. Si no es compatible, se devuelve el resto del pago.</span></div>
+                <div class="notice notice-warn"><i class="fas fa-rotate-right"></i><span><strong>¡Atención! Este proceso NO es permanente.</strong> Si restauras de fábrica, formateas o actualizas la versión de iOS de tu iPhone, la pantalla de supervisión corporativa volverá a aparecer y se bloqueará de nuevo.</span></div>
+                <div class="notice notice-info"><i class="fas fa-images"></i><span>
+                    <strong>¿Tu pantalla se ve como esta?</strong> Si muestra "Administración Remota" o un bloqueo de empresa, este servicio te permite saltarlo.
+                    <div class="mdm-image-container">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/baypass%2Fmdm%2Fmdm.jpeg?alt=media&token=ce938dc0-a917-455a-9b54-8b6db8990d57" alt="Pantalla de bloqueo MDM Apple">
+                    </div>
+                </span></div>
             `;
 
             details.innerHTML = `
-                <li class="ok"><i class="fas fa-check-circle"></i><span>iCloud completamente eliminado</span></li>
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Señal celular completa desde el primer día</span></li>
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Puedes actualizar iOS libremente</span></li>
-                <li class="ok"><i class="fas fa-check-circle"></i><span>Puedes venderlo como iPhone sin iCloud bloqueado</span></li>
-                <li class="info"><i class="fas fa-info-circle"></i><span>Proceso 100% remoto — sin entregar el teléfono</span></li>
+                <li class="ok"><i class="fas fa-check-circle"></i><span>Permite saltar el bloqueo de supervisión corporativa</span></li>
+                <li class="ok"><i class="fas fa-check-circle"></i><span>Señal celular completa (Llamadas, SMS y Datos móviles)</span></li>
+                <li class="ok"><i class="fas fa-check-circle"></i><span>Puedes vincular tu propia cuenta de iCloud temporalmente</span></li>
+                <li class="bad"><i class="fas fa-times-circle"></i><span>No se puede formatear ni restablecer (se bloquea de nuevo)</span></li>
+                <li class="bad"><i class="fas fa-times-circle"></i><span>No se puede actualizar el sistema iOS (se bloquea de nuevo)</span></li>
+                <li class="info"><i class="fas fa-info-circle"></i><span>Proceso 100% remoto mediante herramienta de PC/Mac</span></li>
             `;
 
             cta.innerHTML = `
-                <a href="${waURL(`\n\nQuiero cotizar Desbloqueo de Raíz para ${modelo}. ¿Cómo inicio el proceso?`)}" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> 📅 Agendar cita de desbloqueo</a>
-                <a href="riesgos-apple.html" class="btn btn-secondary"><i class="fas fa-circle-info"></i> Ver riesgos</a>
+                <a href="${waURL(`\n\nQuiero agendar cita de desbloqueo de MDM para ${modelo}. Entiendo que no es permanente y que si actualizo o formateo se vuelve a bloquear.`)}" target="_blank" class="btn btn-primary"><i class="fab fa-whatsapp"></i> 📅 Agendar cita de desbloqueo</a>
+                <a href="riesgos-apple.html" class="btn btn-secondary"><i class="fas fa-circle-info"></i> Ver detalles</a>
             `;
         }
 
