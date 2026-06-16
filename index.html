@@ -43,9 +43,7 @@
         header {
             position: fixed;
             top: 0; left: 0; width: 100%;
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #ffffff;
             border-bottom: 1px solid var(--border);
             z-index: 1000;
             height: 64px;
@@ -53,6 +51,10 @@
             align-items: center;
             padding: 0 16px;
             gap: 10px;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        header.hidden {
+            transform: translateY(-100%);
         }
         .logo {
             font-size: 20px;
@@ -72,12 +74,12 @@
             gap: 10px;
         }
         .header-brands img {
-            height: 26px;
+            height: 50px;
             width: auto;
             object-fit: contain;
-            opacity: 0.72;
+            opacity: 0.90;
             transition: opacity 0.2s, transform 0.2s;
-            filter: grayscale(20%);
+            filter: grayscale(0%);
         }
         .header-brands img:hover {
             opacity: 1;
@@ -87,7 +89,7 @@
         /* Separadores sutiles entre logos */
         .brand-sep {
             width: 1px;
-            height: 18px;
+            height: 22px;
             background: var(--border);
             flex-shrink: 0;
         }
@@ -114,15 +116,30 @@
             flex-shrink: 0;
         }
 
-        /* En pantallas muy pequeñas ocultar algunos logos */
-        @media (max-width: 400px) {
-            .header-brands img:nth-child(n+7) { display: none; }
-            .brand-sep:nth-child(n+6) { display: none; }
-            #user-badge { display: none; }
+        /* ── MOBILE: carousel de logos ── */
+        .brand-carousel {
+            display: none;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
         }
-        @media (max-width: 520px) {
-            .header-brands { gap: 7px; }
-            .header-brands img { height: 22px; }
+        .brand-carousel img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0;
+            position: absolute;
+            transition: opacity 0.5s ease;
+            max-width: 110px;
+        }
+        .brand-carousel img.active {
+            opacity: 1;
+            position: relative;
+        }
+        @media (max-width: 600px) {
+            .header-brands { display: none; }
+            .brand-carousel { display: flex; }
+            #user-badge { display: none; }
         }
 
         /* ── SIDE MENU ── */
@@ -400,6 +417,7 @@
             margin-top: 12px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 6px;
         }
         .preview-label {
@@ -599,7 +617,13 @@
     <div class="hamburger" id="hamburger-btn">
         <i class="fas fa-bars"></i>
     </div>
-    <div class="logo">Unlock<span>ia</span></div>
+    <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+        <div class="logo">Unlock<span>ia</span></div>
+        <div style="display:flex; align-items:center; gap:4px;">
+            <img src="https://img.freepik.com/vector-premium/cactus-hojas-verdes-fondo-blanco_950507-768.jpg" alt="Nopal Hermosillo" style="width:34px; height:34px; object-fit:contain;">
+            <span style="font-size:16px; font-weight:800; color:#1d1d1f; letter-spacing:0.5px; text-shadow: 0 1px 0 rgba(255,255,255,0.95), 0 2px 6px rgba(0,0,0,0.28), 0 4px 8px rgba(0,0,0,0.12);">Hmo</span>
+        </div>
+    </div>
 
     <!-- LOGOS DE MARCAS (centro) -->
     <div class="header-brands">
@@ -611,6 +635,15 @@
         <div class="brand-sep"></div>
         <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/41710218-0BDE-4EDF-BB2D-8AE95D9947DB.png?alt=media&token=2d6a1988-1a98-4b2e-ba0f-1103900153f1" alt="Huawei">
         <div class="brand-sep"></div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/4B693A9F-C16F-4C97-A854-478EDBBFC169.png?alt=media&token=53113185-ef4c-41d3-91c1-7b5714516754" alt="Motorola">
+    </div>
+
+    <!-- CAROUSEL MOBILE -->
+    <div class="brand-carousel" id="brand-carousel">
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/941F7E26-D563-490D-BAE4-45AA82BADE45.png?alt=media&token=2da55cc1-0c11-46a3-891b-0b6deebd069c" alt="Apple" class="active">
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/0102DA7B-A651-473C-A037-5DDB11E6898D.png?alt=media&token=cc0fc0a2-abce-4d80-8ef8-71ce339102da" alt="Samsung">
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/CD8BECD1-328D-4999-AE60-99285A86DF9B.png?alt=media&token=450e2cb2-81d2-4757-b0e8-f53a87fbdff2" alt="Xiaomi">
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/41710218-0BDE-4EDF-BB2D-8AE95D9947DB.png?alt=media&token=2d6a1988-1a98-4b2e-ba0f-1103900153f1" alt="Huawei">
         <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/4B693A9F-C16F-4C97-A854-478EDBBFC169.png?alt=media&token=53113185-ef4c-41d3-91c1-7b5714516754" alt="Motorola">
     </div>
 
@@ -808,6 +841,8 @@
 
 <!-- FOOTER -->
 <footer>
+    <!-- Mensajes rotativos -->
+    <div id="footer-rotativo" style="margin-bottom:14px; font-size:13px; font-weight:500; color:rgba(255,255,255,0.85); min-height:20px; transition:opacity 0.6s ease;"></div>
     <div>© 2026 Unlockia — Desbloqueo tu iPhone</div>
     <div style="margin-top:6px;">
         <a href="terminos.html">Términos</a> &nbsp;·&nbsp;
@@ -815,6 +850,31 @@
         <a href="nosotros.html">Nosotros</a>
     </div>
 </footer>
+<script>
+(function() {
+    const mensajes = [
+        "⭐ Más de 500 iPhones desbloqueados con éxito en Hermosillo",
+        "🔓 Bypass iCloud y MDM — proceso 100% remoto y seguro",
+        "💬 Atención al cliente por WhatsApp de lunes a sábado",
+        "💡 ¿No sabes qué modelo tienes? Escríbenos y te ayudamos gratis",
+        "✅ Reembolso garantizado si tu dispositivo no es compatible",
+        "⚡ Desbloqueo MDM en tan solo 10 a 40 minutos",
+        "📲 Sábados precio especial: Bypass iCloud por solo 550 MXN"
+    ];
+    const el = document.getElementById('footer-rotativo');
+    let i = 0;
+    function mostrar() {
+        el.style.opacity = '0';
+        setTimeout(() => {
+            el.textContent = mensajes[i];
+            el.style.opacity = '1';
+            i = (i + 1) % mensajes.length;
+        }, 600);
+    }
+    mostrar();
+    setInterval(mostrar, 5000);
+})();
+</script>
 
 <!-- FLOATING WA -->
 <div class="help-floating">
@@ -1350,6 +1410,40 @@ onAuthStateChanged(auth, (user) => {
         }
     }
 });
+</script>
+<script>
+(function() {
+    const imgs = document.querySelectorAll('#brand-carousel img');
+    let ci = 0;
+    function nextBrand() {
+        imgs[ci].classList.remove('active');
+        ci = (ci + 1) % imgs.length;
+        imgs[ci].classList.add('active');
+    }
+    setInterval(nextBrand, 3000);
+})();
+</script>
+<script>
+(function() {
+    let lastY = 0;
+    let ticking = false;
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const currentY = window.scrollY;
+                if (currentY > lastY && currentY > 80) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+                lastY = currentY;
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+})();
 </script>
 </body>
 </html>
