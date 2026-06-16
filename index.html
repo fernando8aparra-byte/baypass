@@ -51,17 +51,47 @@
             height: 64px;
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            gap: 12px;
+            padding: 0 16px;
+            gap: 10px;
         }
         .logo {
             font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: var(--text);
-            flex: 1;
+            flex-shrink: 0;
         }
         .logo span { color: var(--blue); }
+
+        /* ── BRAND LOGOS (centro del header) ── */
+        .header-brands {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .header-brands img {
+            height: 26px;
+            width: auto;
+            object-fit: contain;
+            opacity: 0.72;
+            transition: opacity 0.2s, transform 0.2s;
+            filter: grayscale(20%);
+        }
+        .header-brands img:hover {
+            opacity: 1;
+            transform: scale(1.12);
+            filter: grayscale(0%);
+        }
+        /* Separadores sutiles entre logos */
+        .brand-sep {
+            width: 1px;
+            height: 18px;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
         .hamburger {
             width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
@@ -70,6 +100,7 @@
             font-size: 22px;
             color: var(--text);
             transition: background 0.2s;
+            flex-shrink: 0;
         }
         .hamburger:hover { background: var(--bg); }
         #user-badge {
@@ -79,7 +110,19 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 160px;
+            max-width: 120px;
+            flex-shrink: 0;
+        }
+
+        /* En pantallas muy pequeñas ocultar algunos logos */
+        @media (max-width: 400px) {
+            .header-brands img:nth-child(n+7) { display: none; }
+            .brand-sep:nth-child(n+6) { display: none; }
+            #user-badge { display: none; }
+        }
+        @media (max-width: 520px) {
+            .header-brands { gap: 7px; }
+            .header-brands img { height: 22px; }
         }
 
         /* ── SIDE MENU ── */
@@ -557,6 +600,20 @@
         <i class="fas fa-bars"></i>
     </div>
     <div class="logo">Unlock<span>ia</span></div>
+
+    <!-- LOGOS DE MARCAS (centro) -->
+    <div class="header-brands">
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/941F7E26-D563-490D-BAE4-45AA82BADE45.png?alt=media&token=2da55cc1-0c11-46a3-891b-0b6deebd069c" alt="Apple">
+        <div class="brand-sep"></div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/0102DA7B-A651-473C-A037-5DDB11E6898D.png?alt=media&token=cc0fc0a2-abce-4d80-8ef8-71ce339102da" alt="Samsung">
+        <div class="brand-sep"></div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/CD8BECD1-328D-4999-AE60-99285A86DF9B.png?alt=media&token=450e2cb2-81d2-4757-b0e8-f53a87fbdff2" alt="Xiaomi">
+        <div class="brand-sep"></div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/41710218-0BDE-4EDF-BB2D-8AE95D9947DB.png?alt=media&token=2d6a1988-1a98-4b2e-ba0f-1103900153f1" alt="Huawei">
+        <div class="brand-sep"></div>
+        <img src="https://firebasestorage.googleapis.com/v0/b/merchct-d059a.firebasestorage.app/o/4B693A9F-C16F-4C97-A854-478EDBBFC169.png?alt=media&token=53113185-ef4c-41d3-91c1-7b5714516754" alt="Motorola">
+    </div>
+
     <div id="user-badge"></div>
 </header>
 
@@ -805,7 +862,6 @@ const HELLO_MODELS = new Set([
     "iPhone 17","iPhone 17 Pro","iPhone 17 Pro Max"
 ]);
 
-// Helper para determinar el requerimiento de versión de iOS según el modelo
 function obtenerIosRequerido(modelo) {
     const grupo18 = new Set(["iPhone XR", "iPhone XS", "iPhone XS Max"]);
     if (grupo18.has(modelo)) {
@@ -961,7 +1017,6 @@ function buildResult(marca, modelo, des) {
     if (marca === 'apple') {
         if (des === 'Bypass iCloud') {
             
-            // CASO: EL USUARIO DIJO QUE NO TIENE PANTALLA HELLO / TIENE VERSIÓN RECIENTE
             if (helloAnswer === 'no') {
                 icon.className = 'result-icon icon-no';
                 icon.innerHTML = '<i class="fas fa-circle-xmark"></i>';
@@ -989,7 +1044,6 @@ function buildResult(marca, modelo, des) {
                 return;
             }
 
-            // CASO: COMPATIBLE NORMAL (O SI RESPONDIÓ "SÍ")
             const tieneSenal = CON_SENAL.has(modelo);
             const needsHello = HELLO_MODELS.has(modelo);
             const iosReq = obtenerIosRequerido(modelo);
